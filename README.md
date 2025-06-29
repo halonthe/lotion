@@ -1,3 +1,9 @@
 
 ## Lotion
-This is taking note app like notion, obsidian, logseq, and etc.
+This is taking note app like a notion, obsidian, logseq, etc.
+
+### Tech Stack
+ - Typescript
+ - Next.js
+ - Tailwind CSS
+ - Shadcn UI
