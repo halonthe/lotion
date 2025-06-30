@@ -4,6 +4,7 @@ import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/provider/theme-provider";
 import {ConvexProvider} from "@/components/provider/convex-provider";
+import {Toaster} from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,17 +31,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <ThemeProvider
+      <ConvexProvider>
+        <ThemeProvider
           attribute={"class"}
           defaultTheme={"dark"}
           enableSystem={true}
           disableTransitionOnChange={false}
           storageKey={"lotion-theme"}
       >
-          <ConvexProvider>
-        {children}
-          </ConvexProvider>
-      </ThemeProvider>
+            <Toaster position="bottom-center"/>
+            {children}
+        </ThemeProvider>
+      </ConvexProvider>
       </body>
     </html>
   );
