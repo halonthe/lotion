@@ -18,6 +18,24 @@ export const get = query({
 	}
 })
 
+export const getSidebar = query({
+	args:{
+		parentDocument: v.optional(v.id('documents'))
+	},
+	handler: async(ctx, args) => {
+		const identity = await checkUser(ctx)
+
+		const userId = identity.subject
+
+		return await ctx.db.query('documents')
+			.withIndex('by_user_parent',
+				(q: any) => q.eq('userId', userId).eq('parentDocument', args.parentDocument))
+			.filter((q: any) => q.eq(q.field('isArchived'), false))
+			.order("desc")
+			.collect()
+	}
+})
+
 export const create = mutation({
 	args: {
 		title: v.string(),
