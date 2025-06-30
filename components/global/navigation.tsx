@@ -12,6 +12,7 @@ import Item from "@/components/navigation/item";
 import {toast} from "sonner";
 import DocumentList from "@/components/navigation/document-list";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
+import TrashBin from "@/components/global/trash-bin";
 
 export default function Navigation(){
 	const pathname = usePathname();
@@ -139,7 +140,7 @@ export default function Navigation(){
 							<Item label={'Sampah'} icon={Trash}/>
 						</PopoverTrigger>
 						<PopoverContent className="p-0 w-72" side={isMobile ? "bottom" : "right"}>
-							<p>Tempat sampah</p>
+							<TrashBin/>
 						</PopoverContent>
 					</Popover>
 				</div>
