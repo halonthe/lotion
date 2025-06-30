@@ -1,6 +1,6 @@
 import {mutation, query} from "./_generated/server";
 import {v} from "convex/values"
-import {Id} from "./_generated/dataModel";
+import {Doc, Id} from "./_generated/dataModel";
 
 const checkUser = async (ctx:any) => {
 	const identity = await ctx.auth.getUserIdentity()
@@ -11,6 +11,19 @@ const checkUser = async (ctx:any) => {
 
 	return identity
 }
+
+export const getTrash = query({
+	handler: async(ctx) => {
+		const identity = await checkUser(ctx)
+		const userId = identity.subject
+
+		return await ctx.db.query('documents')
+			.withIndex('by_user', (q) => q.eq('userId', userId))
+			.filter((q) => q.eq(q.field('isArchived'), true))
+			.order("desc")
+			.collect()
+	}
+})
 
 export const archive = mutation({
 	args: {id: v.id('documents')},
@@ -42,6 +55,69 @@ export const archive = mutation({
 
 		await recursiveArchive(args.id)
 		return await ctx.db.patch(args.id,{isArchived: true})
+	}
+})
+
+export const restore = mutation({
+	args: {id: v.id('documents')},
+	handler: async(ctx,args) => {
+		const identity = await checkUser(ctx)
+		const userId = identity.subject
+
+		const docExist = await ctx.db.get(args.id)
+		if(!docExist){
+			throw new Error('Document Not Found')
+		}
+
+		if(userId !== docExist.userId){
+			throw new Error('Unauthorized')
+		}
+
+		const options: Partial<Doc<'documents'>> = {
+			isArchived: false
+		}
+
+		if(docExist.parentDocument){
+			const parent = await ctx.db.get(docExist.parentDocument)
+			if(parent?.isArchived){
+				options.parentDocument = undefined
+			}
+		}
+
+		const recursiveRestore = async (docId: Id<'documents'>) => {
+			const children = await ctx.db.query('documents')
+				.withIndex('by_user_parent', (q) =>
+					q.eq('userId', userId).eq('parentDocument', docId)
+				).collect()
+
+			// promises, use 'for' instead of .map or .foreach
+			for(const child of children){
+				await ctx.db.patch(child._id,{isArchived: true})
+				await recursiveRestore(child._id)
+			}
+		}
+
+		await recursiveRestore(args.id)
+		return await ctx.db.patch(args.id,options)
+	}
+})
+
+export const remove = mutation({
+	args: {id: v.id('documents')},
+	handler: async(ctx,args) => {
+		const identity = await checkUser(ctx)
+		const userId = identity.subject
+
+		const docExist = await ctx.db.get(args.id)
+		if(!docExist){
+			throw new Error('Document Not Found')
+		}
+
+		if(userId !== docExist.userId){
+			throw new Error('Unauthorized')
+		}
+
+		return await ctx.db.delete(args.id)
 	}
 })
 

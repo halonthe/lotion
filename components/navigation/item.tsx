@@ -27,7 +27,7 @@ interface ItemProps {
 	level?: number
 	onExpand?: () => void
 	label: string
-	onClickAction: () => void
+	onClickAction?: () => void
 	icon: LucideIcon
 	className?: string
 }
