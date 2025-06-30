@@ -1,18 +1,22 @@
 'use client'
 
 import React, {ComponentRef, useEffect, useRef, useState} from "react";
-import {ChevronsLeft, MenuIcon} from "lucide-react";
+import {ChevronsLeft, MenuIcon, PlusCircle, Search, Settings} from "lucide-react";
 import {useMediaQuery} from "usehooks-ts";
 import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
 import UserItem from "@/components/global/user-item";
-import {useQuery} from "convex/react";
+import {useMutation, useQuery} from "convex/react";
 import {api} from "@/convex/_generated/api";
+import Item from "@/components/navigation/item";
+import {toast} from "sonner";
 
 export default function Navigation(){
 	const pathname = usePathname();
 	const isMobile = useMediaQuery("(max-width: 760px)");
+
 	const documents = useQuery(api.documents.get)
+	const create = useMutation(api.documents.create)
 
 	const isResizing = useRef(false);
 	const sidebarRef = useRef<ComponentRef<"aside">>(null);
@@ -90,6 +94,16 @@ export default function Navigation(){
 		}
 	}
 
+	const handleCreate = () => {
+		const promise = create({title: 'Untitled'})
+
+		toast.promise(promise,{
+			loading: 'Sedang membuat catatan...',
+			success: 'Yay... berhasil membuat catatan!',
+			error: 'Ops... gagal membuat catatan :('
+		})
+	}
+
 	return(
 		<>
 			<aside
@@ -111,6 +125,9 @@ export default function Navigation(){
 
 				<div>
 					<UserItem/>
+					<Item label={'Cari'} onClickAction={() => {}} icon={Search} isSearch/>
+					<Item label={'Pengaturan'} onClickAction={() => {}} icon={Settings}/>
+					<Item label={'Halaman Baru'} onClickAction={handleCreate} icon={PlusCircle}/>
 				</div>
 
 				<div className="mt-4">
