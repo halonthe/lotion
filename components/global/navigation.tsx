@@ -13,8 +13,10 @@ import {toast} from "sonner";
 import DocumentList from "@/components/navigation/document-list";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import TrashBin from "@/components/global/trash-bin";
+import {useSearch} from "@/hooks/use-search";
 
 export default function Navigation(){
+	const search = useSearch()
 	const pathname = usePathname();
 	const isMobile = useMediaQuery("(max-width: 760px)");
 
@@ -127,7 +129,7 @@ export default function Navigation(){
 
 				<div>
 					<UserItem/>
-					<Item label={'Cari'} onClickAction={() => {}} icon={Search} isSearch/>
+					<Item label={'Cari'} onClickAction={search.onOpen} icon={Search} isSearch/>
 					<Item label={'Pengaturan'} onClickAction={() => {}} icon={Settings}/>
 					<Item label={'Halaman Baru'} onClickAction={handleCreate} icon={PlusCircle}/>
 				</div>

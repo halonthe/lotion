@@ -12,6 +12,19 @@ const checkUser = async (ctx:any) => {
 	return identity
 }
 
+export const getSearch = query({
+	handler: async(ctx) => {
+		const identity = await checkUser(ctx)
+		const userId = identity.subject
+
+		return await ctx.db.query('documents')
+			.withIndex('by_user', (q) => q.eq('userId', userId))
+			.filter((q) => q.eq(q.field('isArchived'), false))
+			.order("desc")
+			.collect()
+	}
+})
+
 export const getTrash = query({
 	handler: async(ctx) => {
 		const identity = await checkUser(ctx)

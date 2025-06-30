@@ -10,3 +10,4 @@ This is taking note app like a notion, obsidian, logseq, etc.
  - Sonner
  - Clerk
  - Convex
+ - Zustand
