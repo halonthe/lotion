@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import React from "react";
 import {ThemeProvider} from "@/components/provider/theme-provider";
+import {ConvexProvider} from "@/components/provider/convex-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,9 @@ export default function RootLayout({
           disableTransitionOnChange={false}
           storageKey={"lotion-theme"}
       >
+          <ConvexProvider>
         {children}
+          </ConvexProvider>
       </ThemeProvider>
       </body>
     </html>

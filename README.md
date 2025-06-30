@@ -7,3 +7,5 @@ This is taking note app like a notion, obsidian, logseq, etc.
  - Next.js
  - Tailwind CSS
  - Shadcn UI
+ - Clerk
+ - Convex
