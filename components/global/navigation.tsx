@@ -3,7 +3,7 @@
 import React, {ComponentRef, useEffect, useRef, useState} from "react";
 import {ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash} from "lucide-react";
 import {useMediaQuery} from "usehooks-ts";
-import {usePathname} from "next/navigation";
+import {useParams, usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
 import UserItem from "@/components/global/user-item";
 import {useMutation} from "convex/react";
@@ -14,9 +14,13 @@ import DocumentList from "@/components/navigation/document-list";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import TrashBin from "@/components/global/trash-bin";
 import {useSearch} from "@/hooks/use-search";
+import {useSettings} from "@/hooks/use-settings";
+import Navbar from "@/components/navbar/navbar";
 
 export default function Navigation(){
 	const search = useSearch()
+	const settings = useSettings()
+	const params = useParams()
 	const pathname = usePathname();
 	const isMobile = useMediaQuery("(max-width: 760px)");
 
@@ -130,7 +134,7 @@ export default function Navigation(){
 				<div>
 					<UserItem/>
 					<Item label={'Cari'} onClickAction={search.onOpen} icon={Search} isSearch/>
-					<Item label={'Pengaturan'} onClickAction={() => {}} icon={Settings}/>
+					<Item label={'Pengaturan'} onClickAction={settings.onOpen} icon={Settings}/>
 					<Item label={'Halaman Baru'} onClickAction={handleCreate} icon={PlusCircle}/>
 				</div>
 
@@ -160,9 +164,13 @@ export default function Navigation(){
 					isMobile && "left-0 w-full",
 				)}
 			>
-				<nav className="bg-transparent px-3 py-2 w-full">
-					{isCollapsed && (<MenuIcon onClick={resetWidth} role="button" className="w-6 h-6 text-muted-foreground"/>)}
-				</nav>
+				{!!params.docId ? (
+					<Navbar isCollapsed={isCollapsed} onResetWidthAction={resetWidth}/>
+					) : (
+					<nav className="bg-transparent px-3 py-2 w-full">
+						{isCollapsed && (<MenuIcon onClick={resetWidth} role="button" className="w-6 h-6 text-muted-foreground"/>)}
+					</nav>
+				)}
 			</div>
 
 		</>

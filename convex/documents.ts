@@ -152,6 +152,57 @@ export const getSidebar = query({
 	}
 })
 
+export const update = mutation({
+	args:{
+		id: v.id('documents'),
+		title: v.optional(v.string()),
+		content: v.optional(v.string()),
+		coverImage: v.optional(v.string()),
+		icon: v.optional(v.string()),
+		isPublished: v.optional(v.boolean())
+	},
+	handler: async(ctx,args) => {
+		const identity = await checkUser(ctx)
+		const userId = identity.subject
+
+		const {id, ...rest} = args
+
+		const docExist = await ctx.db.get(args.id)
+		if(!docExist){
+			throw new Error('Document Not Found')
+		}
+
+		if(userId !== docExist.userId){
+			throw new Error('Unauthorized')
+		}
+
+		return await ctx.db.patch(args.id,{...rest})
+	}
+})
+
+export const getById = query({
+	args:{docId: v.id('documents')},
+	handler: async(ctx,args) => {
+		const identity = await checkUser(ctx)
+		const userId = identity.subject
+
+		const docExist = await ctx.db.get(args.docId)
+		if(!docExist){
+			throw new Error('Document Not Found')
+		}
+
+		if(docExist.isPublished && !docExist.isArchived){
+			return docExist
+		}
+
+		if(userId !== docExist.userId){
+			throw new Error('Unauthorized')
+		}
+
+		return docExist
+	}
+})
+
 export const create = mutation({
 	args: {
 		title: v.string(),

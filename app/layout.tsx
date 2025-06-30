@@ -5,6 +5,7 @@ import React from "react";
 import {ThemeProvider} from "@/components/provider/theme-provider";
 import {ConvexProvider} from "@/components/provider/convex-provider";
 import {Toaster} from "sonner";
+import ModalProvider from "@/components/provider/modal-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
           storageKey={"lotion-theme"}
       >
             <Toaster position="bottom-center"/>
+            <ModalProvider/>
             {children}
         </ThemeProvider>
       </ConvexProvider>
