@@ -1,6 +1,6 @@
 'use client'
 
-import {ChevronDown, ChevronRight, LucideIcon, Plus} from "lucide-react";
+import {ChevronDown, ChevronRight, LucideIcon, MoreHorizontal, Plus, Trash} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {Id} from "@/convex/_generated/dataModel";
 import {Skeleton} from "@/components/ui/skeleton";
@@ -9,6 +9,14 @@ import {useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import {useRouter} from "next/navigation";
 import {toast} from "sonner";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu";
+import {useUser} from "@clerk/nextjs";
 
 interface ItemProps {
 	id?: Id<'documents'>
@@ -38,8 +46,10 @@ export default function Item(
 		className
 	}: ItemProps)
 {
+	const {user} = useUser()
 	const router = useRouter()
 	const create = useMutation(api.documents.create)
+	const archive = useMutation(api.documents.archive)
 	const ChevronIcon = expanded ? ChevronDown : ChevronRight
 
 	const handleExpand = (e: React.MouseEvent<HTMLDivElement,MouseEvent>) => {
@@ -65,6 +75,20 @@ export default function Item(
 			loading: 'Sedang membuat catatan...',
 			success: 'Yay... berhasil membuat catatan!',
 			error: 'Ops... gagal membuat catatan :('
+		})
+	}
+
+	const onArchive = (e: React.MouseEvent<HTMLDivElement,MouseEvent>) => {
+		e.preventDefault()
+		e.stopPropagation()
+		if(!id) return;
+
+		const promise = archive({id})
+
+		toast.promise(promise,{
+			loading: 'Sedang mengarsipkan catatan...',
+			success: 'Yay... Catatan dipindah ke tong sampah',
+			error: 'Ops... gagal mengarsipkan catatan :('
 		})
 	}
 
@@ -111,6 +135,26 @@ export default function Item(
 
 			{!!id && (
 				<div className="ml-auto flex items-center gap-x-2">
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+							<div role="button" className="opacity-0 group-hover:opacity-100 h-full rounded-sm ml-auto hover:bg-neutral-300 dark:hover:bg-neutral-600">
+								<MoreHorizontal className="text-muted-foreground h-4 w-4"/>
+							</div>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent
+							className="w-60"
+							align="start"
+							side="right"
+							forceMount
+						>
+							<DropdownMenuItem onClick={onArchive}>
+								<Trash className="h-4 w-4 mr-2"/>
+								Hapus
+							</DropdownMenuItem>
+							<DropdownMenuSeparator/>
+							<div className="text-xs text-muted-foreground">Terakhir diubah oleh: {user?.fullName}</div>
+						</DropdownMenuContent>
+					</DropdownMenu>
 					<div role="button" onClick={onCreate} className="opacity-0 group-hover:opacity-100 h-full rounded-sm ml-auto hover:bg-neutral-300 dark:hover:bg-neutral-600">
 						<Plus className="text-muted-foreground h-4 w-4"/>
 					</div>

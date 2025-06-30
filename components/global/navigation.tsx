@@ -1,7 +1,7 @@
 'use client'
 
 import React, {ComponentRef, useEffect, useRef, useState} from "react";
-import {ChevronsLeft, MenuIcon, PlusCircle, Search, Settings} from "lucide-react";
+import {ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings} from "lucide-react";
 import {useMediaQuery} from "usehooks-ts";
 import {usePathname} from "next/navigation";
 import {cn} from "@/lib/utils";
@@ -10,7 +10,7 @@ import {useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import Item from "@/components/navigation/item";
 import {toast} from "sonner";
-import DocumentList from "@/components/global/document-list";
+import DocumentList from "@/components/navigation/document-list";
 
 export default function Navigation(){
 	const pathname = usePathname();
@@ -132,6 +132,7 @@ export default function Navigation(){
 
 				<div className="mt-4">
 					<DocumentList/>
+					<Item label={'Tambah Halaman'} onClickAction={handleCreate} icon={Plus}/>
 				</div>
 
 				<div
