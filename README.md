@@ -12,3 +12,4 @@ This is taking note app like a notion, obsidian, logseq, etc.
  - Convex
  - Zustand
  - ImageKit
+ - BlockNote

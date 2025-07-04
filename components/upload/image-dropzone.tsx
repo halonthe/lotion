@@ -2,7 +2,7 @@
 
 import {FileRejection, useDropzone} from "react-dropzone";
 import {useCallback, useState} from "react";
-import {cn} from "@/lib/utils";
+import {authenticator, cn} from "@/lib/utils";
 import {toast} from "sonner";
 import {UploadCloudIcon} from "lucide-react";
 import * as React from "react";
@@ -31,28 +31,6 @@ export default function ImageDropzone() 	{
 	const [imagePreview, setImagePreview] = useState({display: false, url: ''});
 	const [isUploading, setIsUploading] = useState(false);
 	// const abortController = new AbortController();
-
-	const authenticator = async () => {
-		try {
-			// Perform the request to the upload authentication endpoint.
-			const response = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/upload-auth`);
-			if (!response.ok) {
-				// If the server response is not successful, extract the error text for debugging.
-				const errorText = await response.text();
-				new Error(`Request failed with status ${response.status}: ${errorText}`);
-			}
-
-			// Parse and destructure the response JSON for upload credentials.
-			const data = await response.json();
-			const { signature, expire, token, publicKey } = data;
-
-			return { signature, expire, token, publicKey };
-		} catch (error) {
-			// Log the original error for debugging before rethrowing a new error.
-			console.error("Authentication error:", error);
-			throw new Error("Authentication request failed");
-		}
-	};
 
 	const handleUpload = async (file: File) => {
 		if(!file) return;

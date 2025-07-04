@@ -3,7 +3,7 @@
 import React, {ComponentRef, useEffect, useRef, useState} from "react";
 import {ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings, Trash} from "lucide-react";
 import {useMediaQuery} from "usehooks-ts";
-import {useParams, usePathname} from "next/navigation";
+import {useParams, usePathname, useRouter} from "next/navigation";
 import {cn} from "@/lib/utils";
 import UserItem from "@/components/global/user-item";
 import {useMutation} from "convex/react";
@@ -22,6 +22,7 @@ export default function Navigation(){
 	const settings = useSettings()
 	const params = useParams()
 	const pathname = usePathname();
+	const router = useRouter()
 	const isMobile = useMediaQuery("(max-width: 760px)");
 
 	const create = useMutation(api.documents.create)
@@ -105,6 +106,7 @@ export default function Navigation(){
 
 	const handleCreate = () => {
 		const promise = create({title: 'Untitled'})
+			.then(docId => router.push(docId))
 
 		toast.promise(promise,{
 			loading: 'Sedang membuat catatan...',

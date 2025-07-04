@@ -6,13 +6,16 @@ import {PlusCircle} from "lucide-react";
 import {useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import {toast} from "sonner";
+import {useRouter} from "next/navigation";
 
 export default function AppPage(){
 	const {user} = useUser()
+	const router = useRouter()
 	const create = useMutation(api.documents.create)
 
 	const onCreate = () => {
 		const promise = create({title: 'Untitled'})
+			.then(docId => router.push(`/app/${docId}`))
 
 		toast.promise(promise, {
 			loading: 'Sedang membuat catatan...',
