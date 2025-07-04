@@ -6,7 +6,7 @@ import {api} from "@/convex/_generated/api";
 import React, {useState} from "react";
 import {Id} from "@/convex/_generated/dataModel";
 import {toast} from "sonner";
-import Spinner from "@/components/global/spinner";
+import Spinner from "@/components/ui/spinner";
 import {Search, Trash, Undo} from "lucide-react";
 import {Input} from "@/components/ui/input";
 import ConfirmModal from "@/components/modal/confirm-modal";

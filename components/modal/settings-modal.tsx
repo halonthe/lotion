@@ -1,7 +1,7 @@
 'use client'
 
 import {useSettings} from "@/hooks/use-settings";
-import {Dialog, DialogContent, DialogHeader} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import {Label} from "@/components/ui/label";
 import {ModeToggle} from "@/components/global/toggle-mode";
 
@@ -10,13 +10,13 @@ export default function SettingsModal() {
 	return (
 		<Dialog open={settings.isOpen} onOpenChange={settings.onClose}>
 			<DialogContent>
-				<DialogHeader className="border-b ppb-3">
-					<h2 className="text-lg font-medium">Pengaturan</h2>
+				<DialogHeader className="border-b pb-3">
+					<DialogTitle className="text-lg font-medium">Pengaturan</DialogTitle>
 				</DialogHeader>
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-y-1">
 						<Label>Tampilan</Label>
-						<span>Sesuaikan tampilan Lotion di device kamu.</span>
+						<span>sesuaikan tampilan Lotion di device kamu.</span>
 					</div>
 					<ModeToggle/>
 				</div>

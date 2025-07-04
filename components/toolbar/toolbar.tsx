@@ -8,12 +8,14 @@ import {ComponentRef, useRef, useState} from "react";
 import {useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import TextareaAutosize from 'react-textarea-autosize';
+import {useImageCover} from "@/hooks/use-image-cover";
 
 interface ToolbarProps {
 	initialData: Doc<'documents'>
 	preview?: boolean
 }
 export default function Toolbar({initialData, preview}: ToolbarProps) {
+	const imageCover = useImageCover()
 
 	const inputRef = useRef<ComponentRef<'textarea'>>(null);
 	const [isEditing, setEditing] = useState(false);
@@ -94,7 +96,7 @@ export default function Toolbar({initialData, preview}: ToolbarProps) {
 						className="text-xs text-muted-foreground"
 						variant="outline"
 						size="sm"
-						onClick={() => {}}
+						onClick={imageCover.onOpen}
 					>
 						<ImageIcon className="w-4 h-4"/>
 						Tambah Cover

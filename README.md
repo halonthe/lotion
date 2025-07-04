@@ -11,3 +11,4 @@ This is taking note app like a notion, obsidian, logseq, etc.
  - Clerk
  - Convex
  - Zustand
+ - ImageKit

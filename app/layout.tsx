@@ -6,6 +6,7 @@ import {ThemeProvider} from "@/components/provider/theme-provider";
 import {ConvexProvider} from "@/components/provider/convex-provider";
 import {Toaster} from "sonner";
 import ModalProvider from "@/components/provider/modal-provider";
+import {ImageKitProvider} from "@imagekit/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,9 +41,11 @@ export default function RootLayout({
           disableTransitionOnChange={false}
           storageKey={"lotion-theme"}
       >
-            <Toaster position="bottom-center"/>
-            <ModalProvider/>
-            {children}
+            <ImageKitProvider urlEndpoint={process.env.NEXT_PUBLIC_IMAGEKIT_ENDPOINT_URL!}>
+                <Toaster position="bottom-center"/>
+                <ModalProvider/>
+                {children}
+            </ImageKitProvider>
         </ThemeProvider>
       </ConvexProvider>
       </body>

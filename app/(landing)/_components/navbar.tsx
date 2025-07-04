@@ -6,7 +6,7 @@ import {ModeToggle} from "@/components/global/toggle-mode";
 import {useConvexAuth} from "convex/react";
 import {SignInButton, UserButton} from "@clerk/nextjs";
 import {Button} from "@/components/ui/button";
-import Spinner from "@/components/global/spinner";
+import Spinner from "@/components/ui/spinner";
 import Link from "next/link";
 
 export default function Navbar(){

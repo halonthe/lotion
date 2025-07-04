@@ -1,9 +1,9 @@
 'use client'
 import React from "react";
 import {useConvexAuth} from "convex/react";
-import Spinner from "@/components/global/spinner";
+import Spinner from "@/components/ui/spinner";
 import {redirect} from "next/navigation";
-import Navigation from "@/components/global/navigation";
+import Navigation from "@/components/navigation/navigation";
 import SearchCommand from "@/components/global/search-command";
 
 export default function MainLayout({children,}: { children: React.ReactNode; }) {

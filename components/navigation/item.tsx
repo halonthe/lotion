@@ -68,7 +68,7 @@ export default function Item(
 				if(!expanded){
 					onExpand?.()
 				}
-				// router.push(`/app/${docId}`)
+				router.push(`/app/${docId}`)
 			})
 
 		toast.promise(promise,{

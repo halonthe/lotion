@@ -241,3 +241,22 @@ export const removeIcon = mutation({
 		return await ctx.db.patch(args.id, {icon: undefined})
 	}
 })
+
+export const removeCover = mutation({
+	args: {id: v.id('documents')},
+	handler: async(ctx, args) => {
+		const identity = await checkUser(ctx)
+		const userId = identity.subject
+
+		const docExist = await ctx.db.get(args.id)
+		if(!docExist){
+			throw new Error('Document Not Found')
+		}
+
+		if(userId !== docExist.userId){
+			throw new Error('Unauthorized')
+		}
+
+		return await ctx.db.patch(args.id, {coverImage: undefined})
+	}
+})
