@@ -104,9 +104,9 @@ export default function Navigation(){
 		}
 	}
 
-	const handleCreate = () => {
-		const promise = create({title: 'Untitled'})
-			.then(docId => router.push(docId))
+	const handleCreate = async() => {
+		const promise = await create({title: 'Untitled'})
+			.then(docId => router.push(`/app/${docId}`))
 
 		toast.promise(promise,{
 			loading: 'Sedang membuat catatan...',
