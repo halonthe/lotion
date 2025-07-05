@@ -38,7 +38,7 @@ export default function Navbar(){
 					<>
 					<Button variant={"ghost"} size={"sm"} asChild>
 						<Link href={"/app"}>
-							Enter Lotion App
+							Enter Lotion
 						</Link>
 					</Button>
 						<UserButton/>
