@@ -12,10 +12,10 @@ import {authenticator} from "@/lib/utils";
 interface EditorProps {
 	initialContent?: string
 	editable?: boolean
-	onChange: (value: string) => void
+	onChangeAction: (value: string) => void
 }
 
-export default function Editor({ initialContent, editable, onChange }: EditorProps) {
+export default function Editor({ initialContent, editable, onChangeAction }: EditorProps) {
 	const { resolvedTheme } = useTheme();
 
 	const uploadFile = async (file: File, _blockId?: string): Promise<string> => {
@@ -55,7 +55,7 @@ export default function Editor({ initialContent, editable, onChange }: EditorPro
 				editable={editable}
 				editor={editor}
 				onChange={(editor) => {
-					onChange(JSON.stringify(editor.document, null, 2));
+					onChangeAction(JSON.stringify(editor.document, null, 2));
 				}}
 			/>
 		</>

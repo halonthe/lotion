@@ -183,8 +183,6 @@ export const update = mutation({
 export const getById = query({
 	args:{docId: v.id('documents')},
 	handler: async(ctx,args) => {
-		const identity = await checkUser(ctx)
-		const userId = identity.subject
 
 		const docExist = await ctx.db.get(args.docId)
 		if(!docExist){
@@ -193,10 +191,6 @@ export const getById = query({
 
 		if(docExist.isPublished && !docExist.isArchived){
 			return docExist
-		}
-
-		if(userId !== docExist.userId){
-			throw new Error('Unauthorized')
 		}
 
 		return docExist

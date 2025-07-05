@@ -5,10 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const authenticator = async () => {
+export const authenticator = async (origin: string) => {
+
   try {
     // Perform the request to the upload authentication endpoint.
-    const response = await fetch(`${process.env.NEXT_PUBLIC_FRONTEND_URL}/api/upload-auth`);
+    const response = await fetch(`${origin}/api/upload-auth`);
     if (!response.ok) {
       // If the server response is not successful, extract the error text for debugging.
       const errorText = await response.text();

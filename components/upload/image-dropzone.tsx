@@ -20,8 +20,10 @@ import {useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import {Id} from "@/convex/_generated/dataModel";
 import Image from "next/image";
+import {useOrigin} from "@/hooks/use-origin";
 
 export default function ImageDropzone() 	{
+	const origin = useOrigin()
 	const imageCover = useImageCover()
 	const params = useParams()
 	const update = useMutation(api.documents.update)
@@ -37,7 +39,7 @@ export default function ImageDropzone() 	{
 		// Retrieve authentication parameters for the upload.
 		let authParams;
 		try {
-			authParams = await authenticator();
+			authParams = await authenticator(origin);
 		} catch (authError) {
 			console.error("Failed to authenticate for upload:", authError);
 			return;
