@@ -55,7 +55,7 @@ export default function PreviewIdPage() {
 				<Toolbar preview initialData={documents}/>
 				<Editor
 					editable={false}
-					onChange={onChange}
+					onChangeAction={onChange}
 					initialContent={documents.content}
 				/>
 			</div>
