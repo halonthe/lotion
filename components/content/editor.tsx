@@ -8,6 +8,7 @@ import {useTheme} from "next-themes";
 import {PartialBlock} from "@blocknote/core";
 import {upload} from "@imagekit/next";
 import {authenticator} from "@/lib/utils";
+import {useOrigin} from "@/hooks/use-origin";
 
 interface EditorProps {
 	initialContent?: string
@@ -17,10 +18,11 @@ interface EditorProps {
 
 export default function Editor({ initialContent, editable, onChangeAction }: EditorProps) {
 	const { resolvedTheme } = useTheme();
+	const origin = useOrigin()
 
-	const uploadFile = async (file: File, _blockId?: string): Promise<string> => {
+	const uploadFile = async (file: File): Promise<string> => {
 		try {
-			const authParams = await authenticator();
+			const authParams = await authenticator(origin);
 
 			const { signature, expire, token, publicKey } = authParams;
 
